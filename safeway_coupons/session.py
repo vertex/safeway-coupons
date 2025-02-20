@@ -115,11 +115,17 @@ class LoginSession(BaseSession):
             except NoSuchElementException:
                 print("Skipping cookie prompt which is not present")
             print("Open Sign In sidebar")
-            wait.until(
-                ec.visibility_of_element_located(
-                    (By.XPATH, "//span [contains(text(), 'Sign In')]")
+            print("Looking for Sign In link...")
+            try:
+                sign_in = wait.until(
+                    ec.visibility_of_element_located(
+                        (By.XPATH, "//span[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'sign in')]")
+                    )
                 )
-            ).click()
+                print("Found Sign In link, clicking...")
+                sign_in.click()
+            except Exception as e:
+                print(f"Error finding Sign In link: {e}")
             print("Open Sign In form")
             wait.until(
                 ec.visibility_of_element_located(
